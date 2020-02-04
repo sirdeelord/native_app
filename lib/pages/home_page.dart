@@ -4,10 +4,13 @@ class HomePage extends StatelessWidget {
     @override
     Widget build(BuildContext context) {
         return Center(
-            child: Text('Home Page', style: TextStyle(
-                fontWeight: FontWeight.w900,
-                fontSize: 28
-            ))
+            child: Text('Home Page',
+                style: TextStyle(
+                    fontFamily: 'Spacemono',
+                    fontWeight: FontWeight.w900,
+                    fontSize: 28
+                )
+            )
         );
     }
 }

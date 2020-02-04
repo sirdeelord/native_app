@@ -1,40 +1,99 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:rxdart/rxdart.dart';
 
-class SideNav extends StatelessWidget {
+class SideNav extends StatefulWidget {
+    @override
+  _SideNavState createState() => _SideNavState();
+}
 
-    bool openSideNav = false;
+class _SideNavState extends State<SideNav> 
+    with SingleTickerProviderStateMixin<SideNav> {
+    AnimationController _animationController;
+    // final bool openSideNav = true;
+    final _animationDuration = const Duration(milliseconds: 500);
+    StreamController<bool> openSideNavStreamController;
+    Stream<bool> openSideNavStream;
+    StreamSink<bool> openSideNavSink;
+
+    @override
+    void initState() {
+        super.initState();
+        _animationController = AnimationController(vsync: this, duration: _animationDuration);
+        openSideNavStreamController = PublishSubject<bool>();
+        openSideNavStream = openSideNavStreamController.stream;
+        openSideNavSink = openSideNavStreamController.sink;
+    }
+
+    @override
+    void dispose() {
+        _animationController.dispose();
+        openSideNavStreamController.close();
+        openSideNavSink.close();
+        super.dispose();
+    }
+
+    void onIconPressed() {
+        final animationStatus = _animationController.status;
+        final animationCompleted = animationStatus == AnimationStatus.completed;
+
+        if (animationCompleted) {
+            openSideNavSink.add(false);
+            _animationController.reverse();
+        } 
+        else {
+            openSideNavSink.add(true);
+            _animationController.forward();
+        }
+    }
 
     @override
     Widget build(BuildContext context) {
 
         final screenWidth = MediaQuery.of(context).size.width;
 
-        return Positioned(
-            top: 0,
-            bottom: 0,
-            left: openSideNav ? 0 : 0,
-            right: openSideNav ? 0 : screenWidth - 45,
-            child: Row(
-                children: <Widget>[
-                    Expanded(
-                        child: Container(
-                            color: Color(0xFF27A09E),
-                            // color: Color(0xFF205374),
-                            // color: Color(0xFF262AAA),
-                        ),
+        return StreamBuilder<bool>(
+            initialData: false,
+            stream: openSideNavStream,
+            builder: (context, sideNavOpenAsync) {
+                return AnimatedPositioned(
+                    duration: _animationDuration,
+                    top: 0,
+                    bottom: 0,
+                    left: sideNavOpenAsync.data ? 0 : 0,
+                    right: sideNavOpenAsync.data ? 0 : screenWidth - 45,
+                    child: Row(
+                        children: <Widget>[
+                            Expanded(
+                                child: Container(
+                                    color: Color(0xFF27A09E),
+                                ),
+                            ),
+                            Align(
+                                alignment: Alignment(0, -0.9),
+                                child: GestureDetector(
+                                    onTap: () {
+                                        onIconPressed();
+                                    },
+                                    child: Container(
+                                        width: 35.0,
+                                        height: 110.0,
+                                        color: Color(0xFF27A09E),
+                                        alignment: Alignment.centerLeft,
+                                        child: AnimatedIcon(
+                                            progress: _animationController.view,
+                                            icon: AnimatedIcons.menu_close,
+                                            color: Color(0xFFD3F5CE),
+                                            size: 25.0,
+                                        ),
+                                    )
+                                ),
+                            )
+                        ],
                     ),
-                    Align(
-                        alignment: Alignment(0, -0.9),
-                            child: Container(
-                            width: 35.0,
-                            height: 110.0,
-                            color: Color(0xFF27A09E),
-                        )
-                    )
-                    
-                ],
-            ),
-
+                );
+            }
+            
         );
     }
 }
