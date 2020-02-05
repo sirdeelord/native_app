@@ -9,8 +9,8 @@ class SideNav extends StatefulWidget {
 
 class _SideNavState extends State<SideNav> 
     with SingleTickerProviderStateMixin<SideNav> {
+
     AnimationController _animationController;
-    // final bool openSideNav = true;
     final _animationDuration = const Duration(milliseconds: 500);
     StreamController<bool> openSideNavStreamController;
     Stream<bool> openSideNavStream;
@@ -60,13 +60,58 @@ class _SideNavState extends State<SideNav>
                     duration: _animationDuration,
                     top: 0,
                     bottom: 0,
-                    left: sideNavOpenAsync.data ? 0 : 0,
-                    right: sideNavOpenAsync.data ? 0 : screenWidth - 45,
+                    left: sideNavOpenAsync.data ? 0 : -screenWidth,
+                    right: sideNavOpenAsync.data ? 0 : screenWidth - 45.0,
                     child: Row(
                         children: <Widget>[
                             Expanded(
                                 child: Container(
                                     color: Color(0xFF27A09E),
+                                    child: Column(
+                                        children: <Widget>[
+                                            SizedBox(height: 100),
+                                            ListTile(
+                                                title: Text('Saddy', 
+                                                    style: TextStyle(
+                                                        fontFamily: 'Spacemono',
+                                                        color: Colors.white,
+                                                        fontSize: 30.0,
+                                                        fontWeight: FontWeight.w800,
+                                                    ),
+                                                ),
+                                                subtitle: Text('sodugbesan@example.io',
+                                                    style: TextStyle(
+                                                        fontFamily: 'Spacemono',
+                                                        color: Color(0xFFD3F5CE),
+                                                        fontSize: 20.0,
+                                                        fontWeight: FontWeight.w100
+                                                    ),
+                                                ),
+                                                leading: CircleAvatar(
+                                                    // child: Text('S.O',
+                                                    //     style: TextStyle(
+                                                    //         fontFamily: 'Spacemono',
+                                                    //         // color: Color(0xFF27A09E),
+                                                    //         color: Colors.white,
+                                                    //         fontSize: 20.0,
+                                                    //         fontWeight: FontWeight.w100
+                                                    //     ),
+                                                    // ),
+                                                    child: Icon(
+                                                        Icons.perm_identity,
+                                                        color: Color(0xFFD3F5CE),
+                                                    ),
+                                                     radius: 30,
+                                                ),
+                                                
+                                            ),
+                                            Divider(
+                                                height: 64.0,
+                                                thickness: 0.5,
+                                                color: Color(0xFFD3F5CE),
+                                            )
+                                        ]
+                                    ),
                                 ),
                             ),
                             Align(
@@ -92,8 +137,7 @@ class _SideNavState extends State<SideNav>
                         ],
                     ),
                 );
-            }
-            
+            }   
         );
     }
 }
