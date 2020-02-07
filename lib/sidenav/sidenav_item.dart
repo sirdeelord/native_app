@@ -29,7 +29,7 @@ class SideNavItems extends StatelessWidget {
                                 fontWeight: FontWeight.w300,
                                 fontSize: 24,
                                 color: Colors.white
-                            )
+                            ),
                         )
                     ],
                 ),
