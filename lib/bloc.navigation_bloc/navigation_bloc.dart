@@ -1,12 +1,14 @@
 import 'package:bloc/bloc.dart';
+import '../pages/notifications_page.dart';
+import '../pages/settings_page.dart';
 import '../pages/home_page.dart';
 import '../pages/account_page.dart';
 
 enum NavigationEvents {
     HomePageClickedEvent,
     AccountClickedEvent,
-    // NotificationClickedEvent,
-    // SettingsClickedEvent
+    NotificationClickedEvent,
+    SettingsClickedEvent
 }
 
 abstract class NavigationStates {}
@@ -24,13 +26,12 @@ class NavigationBloc extends Bloc<NavigationEvents, NavigationStates> {
             case NavigationEvents.AccountClickedEvent:
                 yield AccountPage();
                 break;
-            // case NavigationEvents.NotificationClickedEvent:
-            //     yield NotificationPage();
-            //     break;
-            // case NavigationEvents.AccountClickedEvent:
-            //     yield SettingsPage();
-            //     break;
-            // default:
+            case NavigationEvents.NotificationClickedEvent:
+                yield NotificationsPage();
+                break;
+            case NavigationEvents.SettingsClickedEvent:
+                yield SettingsPage();
+                break;
         }
     }
 }
